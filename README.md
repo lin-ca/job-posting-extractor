@@ -13,6 +13,7 @@ Side project to try out different design patterns and a few newer Python and Fas
 - Environment-based configuration with pydantic-settings
 - Interactive API documentation (Swagger UI and ReDoc)
 - Mock connector for testing without API calls
+- Unit and integration test suite covering models, API endpoints, connectors, and services
 
 
 ## Prerequisites
