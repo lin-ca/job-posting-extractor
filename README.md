@@ -140,4 +140,11 @@ src/job_posting_extractor/
     ├── dependencies.py      # Dependency injection setup
     └── routers/
         └── extraction.py    # Job extraction endpoints
+tests/
+├── conftest.py                  # Pytest fixtures & configuration
+├── test_models.py               # Data model validation tests
+├── test_exceptions.py           # Exception hierarchy tests
+├── test_claude_connector.py     # Claude connector unit tests
+├── test_extraction_service.py   # Extraction service tests
+└── test_api.py                  # API endpoint & app factory tests
 ```
