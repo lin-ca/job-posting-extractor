@@ -2,10 +2,18 @@
 
 This service layer handles business logic for job extraction, including:
 - Confidence calculation based on extraction completeness
-- TODO: Response caching to avoid redundant API calls
+
+Next TODOs/ideas:
+- TODO: Add Dockerfile
+- TODO: Add PII filter logic
+
+- TODO: Add structured logging
+- TODO: Add response caching with Redis
+
 - TODO: Database persistence for extracted jobs
 - TODO: Batch extraction support
 - TODO: Extraction analytics and metrics
+- TODO: FE Plugin?
 """
 
 from job_posting_extractor.connectors.base import JobExtractor

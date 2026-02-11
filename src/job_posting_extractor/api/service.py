@@ -13,9 +13,6 @@ from job_posting_extractor.connectors.claude import ClaudeConnector
 from job_posting_extractor.connectors.mock_claude import MockClaudeConnector
 from job_posting_extractor.exceptions import BusinessError
 
-# TODO: Add structured logging with structlog for production debugging
-# TODO: Add OpenTelemetry instrumentation for observability (traces, metrics)
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
@@ -51,10 +48,8 @@ def business_exception_handler(_request: Request, exc: BusinessError) -> JSONRes
         content={"detail": exc.message, "error_code": exc.error_code},
     )
 
-
 def general_exception_handler(_request: Request, _exc: Exception) -> JSONResponse:
     """Catch-all handler for unexpected exceptions."""
-    # TODO: Add structured logging here for production debugging
     return JSONResponse(
         status_code=500,
         content={"detail": "Internal server error"},
