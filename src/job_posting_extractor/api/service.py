@@ -48,6 +48,7 @@ def business_exception_handler(_request: Request, exc: BusinessError) -> JSONRes
         content={"detail": exc.message, "error_code": exc.error_code},
     )
 
+
 def general_exception_handler(_request: Request, _exc: Exception) -> JSONResponse:
     """Catch-all handler for unexpected exceptions."""
     return JSONResponse(

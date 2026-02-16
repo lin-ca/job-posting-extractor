@@ -110,7 +110,9 @@ class TestExceptionHandlers:
         self, app_with_failing_service: FastAPI
     ) -> None:
         with TestClient(app_with_failing_service) as client:
-            response = client.post("/api/v1/extract/job", json={"text": "Some job posting"})
+            response = client.post(
+                "/api/v1/extract/job", json={"text": "Some job posting"}
+            )
 
         assert response.status_code == 422
         data = response.json()
