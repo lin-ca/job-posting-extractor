@@ -59,6 +59,26 @@ make dev
 
 The application will be available at `http://localhost:8000`
 
+## Docker
+
+Build the image:
+
+```bash
+docker build -t job-posting-extractor .
+```
+
+Run the container:
+
+```bash
+docker run -p 8000:8000 -e ANTHROPIC_API_KEY=your_key_here job-posting-extractor
+```
+
+Or using an `.env` file:
+
+```bash
+docker run -p 8000:8000 --env-file .env job-posting-extractor
+```
+
 ## API Endpoints
 
 ### GET `/health`
