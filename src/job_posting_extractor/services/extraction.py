@@ -4,7 +4,6 @@ This service layer handles business logic for job extraction, including:
 - Confidence calculation based on extraction completeness
 
 Next TODOs/ideas:
-- TODO: Add Dockerfile
 - TODO: Add PII filter logic
 
 - TODO: Add structured logging
