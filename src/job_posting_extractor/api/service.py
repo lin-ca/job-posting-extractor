@@ -7,10 +7,11 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 from job_posting_extractor import __version__
-from job_posting_extractor.config import get_settings
+from job_posting_extractor.config import LLMProvider, get_settings
 from job_posting_extractor.connectors.base import JobExtractor
 from job_posting_extractor.connectors.claude import ClaudeConnector
 from job_posting_extractor.connectors.mock_claude import MockClaudeConnector
+from job_posting_extractor.connectors.openai_compat import OpenAICompatConnector
 from job_posting_extractor.exceptions import BusinessError
 
 
@@ -21,7 +22,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
     Handles:
     - Configuration validation on startup
-    - ClaudeConnector initialization with connection pooling
+    - LLM connector initialization (Claude, OpenAI-compatible, or mock)
     - Resource cleanup on shutdown
     """
     settings = get_settings()
@@ -30,10 +31,12 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     connector: JobExtractor
     if settings.mock_llm:
         connector = MockClaudeConnector()
+    elif settings.llm_provider == LLMProvider.OPENAI:
+        connector = OpenAICompatConnector(settings=settings)
     else:
         connector = ClaudeConnector(settings=settings)
     await connector.initialize()
-    app.state.claude_connector = connector
+    app.state.llm_connector = connector
 
     yield
 

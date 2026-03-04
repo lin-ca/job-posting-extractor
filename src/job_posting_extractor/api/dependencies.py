@@ -11,7 +11,7 @@ from job_posting_extractor.services.extraction import ExtractionService
 
 def get_connector(request: Request) -> JobExtractor:
     """Get the lifespan-managed connector from app state."""
-    connector: JobExtractor = request.app.state.claude_connector
+    connector: JobExtractor = request.app.state.llm_connector
     return connector
 
 
