@@ -1,6 +1,6 @@
 # Job Posting Extractor
 
-A modern FastAPI application that extracts structured job posting data from unstructured text using Claude AI.
+A modern FastAPI application that extracts structured job posting data from unstructured text using Claude AI or any OpenAI-compatible API (LM Studio, Ollama, vLLM, etc.).
 
 Side project to try out different design patterns and a few newer Python and FastAPI features (e.g. lifespan context manager, application factory, ... ).
 
@@ -10,6 +10,7 @@ Side project to try out different design patterns and a few newer Python and Fas
 - FastAPI web framework
 - Modern Python tooling: [uv](https://docs.astral.sh/uv/) for fast dependency management, [Ruff](https://docs.astral.sh/ruff/) for linting/formatting, [mypy](https://mypy.readthedocs.io/) for strict type checking
 - Claude AI integration using the Anthropic Python SDK with tool use
+- OpenAI-compatible API support for local/self-hosted models (LM Studio, Ollama, vLLM, etc.)
 - Environment-based configuration with pydantic-settings
 - Interactive API documentation (Swagger UI and ReDoc)
 - Mock connector for testing without API calls
@@ -19,7 +20,7 @@ Side project to try out different design patterns and a few newer Python and Fas
 ## Prerequisites
 
 - Python 3.12+
-- Anthropic API key ([get one here](https://console.anthropic.com/))
+- Anthropic API key ([get one here](https://console.anthropic.com/)) — or an OpenAI-compatible local server
 
 ## Setup
 
@@ -110,8 +111,12 @@ Environment variables (with defaults):
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `ANTHROPIC_API_KEY` | Your Anthropic API key | (required) |
+| `LLM_PROVIDER` | LLM backend to use (`claude` or `openai`) | `claude` |
+| `ANTHROPIC_API_KEY` | Your Anthropic API key | (required when `claude`) |
 | `CLAUDE_MODEL` | Claude model to use | `claude-sonnet-4-5-20250929` |
+| `OPENAI_API_KEY` | API key for OpenAI-compatible server | `lm-studio` |
+| `OPENAI_BASE_URL` | Base URL for OpenAI-compatible server | `http://localhost:1234/v1` |
+| `OPENAI_MODEL` | Model name for OpenAI-compatible server | `openai/gpt-oss-20b` |
 | `MAX_TOKENS` | Maximum tokens for responses | `1024` |
 | `API_TIMEOUT` | API request timeout in seconds | `60.0` |
 | `MOCK_LLM` | Whether or not to mock LLM call | `false` |
@@ -151,7 +156,9 @@ src/job_posting_extractor/
 ├── exceptions.py            # Custom exception hierarchy
 ├── connectors/              # External API adapters
 │   ├── base.py              # Protocol definitions (interfaces)
-│   ├── claude.py            # Production Claude API connector
+│   ├── shared.py            # Shared schema, prompts, and helpers
+│   ├── claude.py            # Claude API connector (Anthropic SDK)
+│   ├── openai_compat.py     # OpenAI-compatible API connector
 │   └── mock_claude.py       # Mock connector for testing
 ├── services/                # Business logic layer
 │   └── extraction.py        # Orchestrates extraction + confidence
@@ -164,7 +171,8 @@ tests/
 ├── conftest.py                  # Pytest fixtures & configuration
 ├── test_models.py               # Data model validation tests
 ├── test_exceptions.py           # Exception hierarchy tests
-├── test_claude_connector.py     # Claude connector unit tests
-├── test_extraction_service.py   # Extraction service tests
-└── test_api.py                  # API endpoint & app factory tests
+├── test_claude_connector.py          # Claude connector unit tests
+├── test_openai_compat_connector.py   # OpenAI-compatible connector unit tests
+├── test_extraction_service.py        # Extraction service tests
+└── test_api.py                       # API endpoint & app factory tests
 ```
